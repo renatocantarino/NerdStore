@@ -52,6 +52,8 @@ namespace NerdStore.Catalogo.Domain
             this.CategoriaId = categoria.Id;
         }
 
+        public void ReporEstoque(int quantidade) => QuantidadeEstoque += quantidade;
+
         public void AlterarDescricao(string descricao) => this.Descricao = descricao;
 
         public void DebitarEstoque(int quantidade)
