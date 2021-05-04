@@ -1,4 +1,7 @@
-﻿using NerdStore.SharedKernel.DomainObjects;
+﻿using NerdStore.Catalogo.Domain.ValueObjects;
+using NerdStore.SharedKernel.Assertions;
+using NerdStore.SharedKernel.DomainObjects;
+using NerdStore.SharedKernel.Exceptions;
 using System;
 
 namespace NerdStore.Catalogo.Domain
@@ -19,14 +22,20 @@ namespace NerdStore.Catalogo.Domain
         public Guid CategoriaId { get; private set; }
         public Categoria Categoria { get; private set; }
 
-        public Produto(string nome, string descricao, string imagem, decimal valor, bool ativo, Guid categoriaId)
+        public Dimensoes Dimensoes { get; private set; }
+
+        public Produto(string nome, string descricao, string imagem, decimal valor, bool ativo, Guid categoriaId,
+            Dimensoes dimensoes)
         {
-            Nome = nome ?? throw new ArgumentNullException(nameof(nome));
-            Descricao = descricao ?? throw new ArgumentNullException(nameof(descricao));
-            Imagem = imagem ?? throw new ArgumentNullException(nameof(imagem));
+            Nome = nome;
+            Descricao = descricao;
+            Imagem = imagem;
             Valor = valor;
             Ativo = ativo;
             CategoriaId = categoriaId;
+            Dimensoes = dimensoes;
+
+            Validar();
         }
 
         public void Ativar() => Ativo = true;
@@ -44,30 +53,26 @@ namespace NerdStore.Catalogo.Domain
         public void DebitarEstoque(int quantidade)
         {
             if (quantidade < 0) quantidade *= -1;
+
+            if (!PossuiEstoque(quantidade))
+                throw new DomainException("Estoque insuficiente");
+
             QuantidadeEstoque -= quantidade;
         }
 
         public bool PossuiEstoque(int quantidade) => QuantidadeEstoque >= quantidade;
 
-        public void Validar()
+        private void Validar()
         {
-            //entidade invalidas nao pode ser criadas
-            //validacao
-            //estado consistente
+            // entidade invalidas nao pode ser criadas
+            // validacao
+            // fail fast validaçoes - Assertion Concern -> Vernon
+            // estado consistente
+
+            ValidationBuilder.ValidarSeVazio(this.Nome, "O Nome do produto não pode estar vazio");
+            ValidationBuilder.ValidarSeVazio(this.Descricao, "a Descrição do produto não pode estar vazio");
+            ValidationBuilder.ValidarSeDiferente(this.CategoriaId, Guid.Empty, "Categoria não informada");
+            ValidationBuilder.ValidarSeMenorQue(this.Valor, 0, "O valor está abaixo do minimo");
         }
-    }
-
-    public class Categoria : Entity
-    {
-        public string Nome { get; private set; }
-        public string Descricao { get; private set; }
-
-        public Categoria(string nome, string descricao)
-        {
-            Nome = nome ?? throw new ArgumentNullException(nameof(nome));
-            Descricao = descricao ?? throw new ArgumentNullException(nameof(descricao));
-        }
-
-        public override string ToString() => $"{this.Nome} - {this.Descricao}";
     }
 }
