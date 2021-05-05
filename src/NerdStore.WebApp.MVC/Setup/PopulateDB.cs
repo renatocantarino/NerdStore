@@ -32,11 +32,11 @@ namespace NerdStore.WebApp.MVC.Setup
 
             context.SaveChanges();
 
-            Produto regata = new("Regata BS", "regata branca", "", 55.6m, true, blusa.Id, new(1, 3, 1));
-            Produto camisa = new("camisa BS", "camisa branca", "", 75.6m, true, blusa.Id, new(1, 3, 1));
-            Produto caneca = new("caneca BS", "caneca branca", "", 25.6m, true, acessorios.Id, new(1, 3, 1));
-            Produto moleton = new("moleton BS", "moleton branca", "", 95.6m, true, casacos.Id, new(1, 3, 1));
-            Produto bermuda = new("bermuda BS", "bermuda branca", "", 45.6m, true, blusa.Id, new(1, 3, 1));
+            Produto regata = new("Regata BS", "regata branca", "camiseta1.jpg", 55.6m, true, 1, blusa.Id, new(1, 3, 1)); ;
+            Produto camisa = new("camisa BS", "camisa branca", "camiseta2.jpg", 75.6m, true, 5, blusa.Id, new(1, 3, 1));
+            Produto caneca = new("caneca BS", "caneca branca", "caneca3.jpg", 25.6m, true, 7, acessorios.Id, new(1, 3, 1));
+            Produto moleton = new("moleton BS", "moleton branca", "camiseta3.jpg", 95.6m, true, 3, casacos.Id, new(1, 3, 1));
+            Produto bermuda = new("bermuda BS", "bermuda branca", "camiseta4.jpg", 45.6m, true, 2, blusa.Id, new(1, 3, 1));
 
             context.Produtos.Add(regata);
             context.Produtos.Add(camisa);

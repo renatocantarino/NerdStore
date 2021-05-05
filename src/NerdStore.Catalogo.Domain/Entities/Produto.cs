@@ -28,7 +28,7 @@ namespace NerdStore.Catalogo.Domain
         {
         }
 
-        public Produto(string nome, string descricao, string imagem, decimal valor, bool ativo, Guid categoriaId,
+        public Produto(string nome, string descricao, string imagem, decimal valor, bool ativo, int quantidadeEstoque, Guid categoriaId,
             Dimensoes dimensoes)
         {
             Nome = nome;
@@ -38,6 +38,7 @@ namespace NerdStore.Catalogo.Domain
             Ativo = ativo;
             CategoriaId = categoriaId;
             Dimensoes = dimensoes;
+            QuantidadeEstoque = quantidadeEstoque;
 
             Validar();
         }

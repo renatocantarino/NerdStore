@@ -18,6 +18,7 @@ namespace NerdStore.Catalogo.Tests.Factories
            f.Commerce.ProductAdjective(),
                 f.Commerce.Random.Decimal(0.00m, 10000.00m),
      f.Random.Bool(),
+     f.Random.Int(),
 f.Random.Guid(),
   new Domain.ValueObjects.Dimensoes(3, 3, 6))).Generate();
 
@@ -31,7 +32,7 @@ f.Random.Guid(),
            string.Empty,
            f.Commerce.ProductAdjective(),
                 f.Commerce.Random.Decimal(0.00m, 10000.00m),
-     f.Random.Bool(),
+     f.Random.Bool(), f.Random.Int(),
 f.Random.Guid(),
   new Domain.ValueObjects.Dimensoes(3, 3, 6))).Generate();
 
