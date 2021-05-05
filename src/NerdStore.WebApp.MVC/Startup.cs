@@ -45,6 +45,7 @@ namespace NerdStore.WebApp.MVC
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
+                app.Seed();
             }
             else
             {

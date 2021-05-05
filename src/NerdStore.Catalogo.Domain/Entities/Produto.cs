@@ -77,7 +77,7 @@ namespace NerdStore.Catalogo.Domain
 
             ValidationBuilder.ValidarSeVazio(this.Nome, "O Nome do produto não pode estar vazio");
             ValidationBuilder.ValidarSeVazio(this.Descricao, "a Descrição do produto não pode estar vazio");
-            ValidationBuilder.ValidarSeDiferente(this.CategoriaId, Guid.Empty, "Categoria não informada");
+            ValidationBuilder.ValidarSeIgual(this.CategoriaId, Guid.Empty, "Categoria não informada");
             ValidationBuilder.ValidarSeMenorQue(this.Valor, 0, "O valor está abaixo do minimo");
         }
     }
