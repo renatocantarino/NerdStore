@@ -11,6 +11,7 @@ namespace NerdStore.Catalogo.Application.Services
 
         Task<ProdutoViewModel> ObterPorId(Guid id);
 
+        //TODO: todos ativos na vitrine
         Task<IReadOnlyCollection<ProdutoViewModel>> ObterTodos();
 
         Task<IReadOnlyCollection<CategoriaViewModel>> ObterCategorias();
