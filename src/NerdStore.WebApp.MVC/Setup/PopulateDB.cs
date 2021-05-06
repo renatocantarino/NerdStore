@@ -2,10 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NerdStore.Catalogo.Data.Contexts;
 using NerdStore.Catalogo.Domain;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NerdStore.WebApp.MVC.Setup
 {
