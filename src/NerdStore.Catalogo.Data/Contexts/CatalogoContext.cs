@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NerdStore.Catalogo.Domain;
 using NerdStore.SharedKernel.Data.Repository;
+using NerdStore.SharedKernel.Messages;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace NerdStore.Catalogo.Data.Contexts
             {
                 property.SetColumnType("varchar(100)");
             }
+
+            modelBuilder.Ignore<Event>();
 
             //injeção via reflexao
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);

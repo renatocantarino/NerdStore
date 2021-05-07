@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NerdStore.Catalogo.Application.Mappers;
 using NerdStore.Catalogo.Data.Contexts;
+using NerdStore.Vendas.Data.Contexts;
 using NerdStore.WebApp.MVC.Data;
 using NerdStore.WebApp.MVC.Setup;
 
@@ -21,7 +22,8 @@ namespace NerdStore.WebApp.MVC
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CatalogoContext>(options => options.UseInMemoryDatabase("CatalogoDB"));
+            services.AddDbContext<CatalogoContext>(options => options.UseInMemoryDatabase("NerdStore"));
+            services.AddDbContext<VendasContext>(options => options.UseInMemoryDatabase("NerdStore"));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
