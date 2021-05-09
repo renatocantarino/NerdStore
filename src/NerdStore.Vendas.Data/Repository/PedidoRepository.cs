@@ -32,7 +32,7 @@ namespace NerdStore.Vendas.Data.Repository
         public async Task<PedidoItem> ObterItemPorPedido(Guid pedidoId, Guid produtoId)
             => await _context.PedidoItems.FirstOrDefaultAsync(p => p.ProdutoId == produtoId && p.PedidoId == pedidoId);
 
-        public async Task<IReadOnlyCollection<Pedido>> ObterListaPorCliente(Guid clienteId)
+        public async Task<IEnumerable<Pedido>> ObterListaPorCliente(Guid clienteId)
             => await _context.Pedidos.AsNoTracking().Where(p => p.ClienteId == clienteId).ToListAsync();
 
         public async Task<Pedido> ObterPedidoRascunhoPorCliente(Guid clienteId)

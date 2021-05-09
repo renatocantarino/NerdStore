@@ -5,6 +5,7 @@ using NerdStore.Catalogo.Application.ViewModels;
 using NerdStore.SharedKernel.EventHandlers;
 using NerdStore.SharedKernel.Messages.Commom.Notification;
 using NerdStore.Vendas.Application.Commands;
+using NerdStore.Vendas.Application.Queries;
 using System;
 using System.Threading.Tasks;
 
@@ -14,16 +15,20 @@ namespace NerdStore.WebApp.MVC.Controllers
     {
         private readonly IProdutoAppService _produtoAppService;
         private readonly IMediatorHandler _mediatorHandler;
+        private readonly IPedidoQueries _pedidoQueries;
 
         public CarrinhoController(INotificationHandler<DomainNotification> notifications,
-               IProdutoAppService produtoAppService, IMediatorHandler mediatorHandler) : base(notifications, mediatorHandler)
+                                  IProdutoAppService produtoAppService, IMediatorHandler mediatorHandler,
+                                  IPedidoQueries pedidoQueries) : base(notifications, mediatorHandler)
 
         {
             _produtoAppService = produtoAppService;
             _mediatorHandler = mediatorHandler;
+            this._pedidoQueries = pedidoQueries;
         }
 
-        public IActionResult Index() => View();
+        [Route("meu-carrinho")]
+        public async Task<IActionResult> Index() => View(await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId));
 
         [HttpPost]
         [Route("meu-carrinho")]
@@ -47,10 +52,17 @@ namespace NerdStore.WebApp.MVC.Controllers
             return RedirectToAction("Detalhes", "Vitrine", new { id });
         }
 
-        private AdicionarItemPedidoCommand GetCommand(ProdutoViewModel produto, int quantidade)
+        [HttpPost]
+        [Route("remover-item")]
+        public async Task<IActionResult> RemoverItem(Guid id)
         {
-            return new AdicionarItemPedidoCommand(ClienteId, produto.Id, produto.Nome,
-                                                  quantidade, produto.Valor);
+            var produto = await _produtoAppService.ObterPorId(id);
+            if (produto == null) return BadRequest();
+
+            var command = new RemoverItemCommand();
         }
+
+        private AdicionarItemPedidoCommand GetCommand(ProdutoViewModel produto, int quantidade)
+               => new(ClienteId, produto.Id, produto.Nome, quantidade, produto.Valor);
     }
 }

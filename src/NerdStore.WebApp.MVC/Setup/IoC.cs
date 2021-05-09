@@ -11,6 +11,7 @@ using NerdStore.SharedKernel.Messages;
 using NerdStore.SharedKernel.Messages.Commom.Notification;
 using NerdStore.Vendas.Application.Commands;
 using NerdStore.Vendas.Application.Handlers;
+using NerdStore.Vendas.Application.Queries;
 using NerdStore.Vendas.Data.Contexts;
 using NerdStore.Vendas.Data.Repository;
 using NerdStore.Vendas.Domain.Repositories;
@@ -37,6 +38,7 @@ namespace NerdStore.WebApp.MVC.Setup
             //vendas
             service.AddScoped<IRequestHandler<AdicionarItemPedidoCommand, ResponseBase>, PedidoCommandHandler>();
             service.AddScoped<IPedidoRepository, PedidoRepository>();
+            service.AddScoped<IPedidoQueries, PedidoQueries>();
             service.AddScoped<VendasContext>();
         }
     }

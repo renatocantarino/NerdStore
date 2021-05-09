@@ -10,7 +10,7 @@ namespace NerdStore.Vendas.Domain.Repositories
     {
         Task<Pedido> ObterPorId(Guid id);
 
-        Task<IReadOnlyCollection<Pedido>> ObterListaPorCliente(Guid clienteId);
+        Task<IEnumerable<Pedido>> ObterListaPorCliente(Guid clienteId);
 
         Task<Pedido> ObterPedidoRascunhoPorCliente(Guid clienteId);
 
