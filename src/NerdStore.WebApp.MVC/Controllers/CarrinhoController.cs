@@ -53,13 +53,48 @@ namespace NerdStore.WebApp.MVC.Controllers
         }
 
         [HttpPost]
+        [Route("atualizar-item")]
+        public async Task<IActionResult> AtualizarItem(Guid id, int quantidade)
+        {
+            var produto = await _produtoAppService.ObterPorId(id);
+            if (produto == null) return BadRequest();
+
+            var command = new AtualizarItemPedidoCommand(ClienteId, id, quantidade);
+            await _mediatorHandler.Comando(command);
+
+            if (OperacaoValida())
+                return RedirectToAction("Index");
+
+            return View("Index", await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId));
+        }
+
+        [HttpPost]
         [Route("remover-item")]
         public async Task<IActionResult> RemoverItem(Guid id)
         {
             var produto = await _produtoAppService.ObterPorId(id);
             if (produto == null) return BadRequest();
 
-            var command = new RemoverItemCommand();
+            var command = new RemoverItemPedidoCommand(ClienteId, id);
+            await _mediatorHandler.Comando(command);
+
+            if (OperacaoValida())
+                return RedirectToAction("Index");
+
+            return View("Index", await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId));
+        }
+
+        [HttpPost]
+        [Route("aplicar-voucher")]
+        public async Task<IActionResult> AplicarVoucher(string codigo)
+        {
+            var command = new AplicarVoucherPedidoCommand(ClienteId, codigo);
+            await _mediatorHandler.Comando(command);
+
+            if (OperacaoValida())
+                return RedirectToAction("Index");
+
+            return View("Index", await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId));
         }
 
         private AdicionarItemPedidoCommand GetCommand(ProdutoViewModel produto, int quantidade)

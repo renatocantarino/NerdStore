@@ -13,7 +13,7 @@ namespace NerdStore.WebApp.MVC.Extensions
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var cart = await _pedidoQuery.ObterCarrinhoDoCliente(Guid.NewGuid());
+            var cart = await _pedidoQuery.ObterCarrinhoDoCliente(Guid.Parse("A7318B61-7A0B-4100-2F44-08D784C02276"));
             var itens = cart?.Items.Count ?? 0;
 
             return View(itens);

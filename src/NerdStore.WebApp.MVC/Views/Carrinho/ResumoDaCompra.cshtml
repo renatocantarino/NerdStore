@@ -31,12 +31,12 @@
                                 </li>
                             }
 
-                            if (!string.IsNullOrEmpty(Model.VoucherCodigo))
+                            if (!string.IsNullOrEmpty(Model.Voucher))
                             {
                                 <li class="list-group-item d-flex justify-content-between bg-light">
                                     <div class="text-success">
                                         <h6 class="my-0">Voucher Utilizado</h6>
-                                        <small>@Model.VoucherCodigo</small>
+                                        <small>@Model.Voucher</small>
                                     </div>
                                     <span class="text-success">-@Model.ValorDesconto.ToString("C")</span>
                                 </li>
@@ -48,7 +48,6 @@
                             </li>
                         }
                     </ul>
-
                 </div>
                 <div class="col-md-8 order-md-1">
                     <form method="post" asp-controller="Carrinho" asp-action="IniciarPedido">
@@ -57,28 +56,27 @@
                         <hr class="mb-4">
                         <div class="row">
                             <img class="img-fluid" src="Images/cards.png">
-
                         </div>
                         <br /><br />
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label>Nome no Cartão</label>
-                                <input asp-for="Pagamento.NomeCartao" type="text" class="form-control" placeholder="" required="">
+                                <input asp-for="Pagamento.Nome" type="text" class="form-control" placeholder="" required="">
                                 <small class="text-muted">Nome completo como consta no cartão</small>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label>Número do Cartão</label>
-                                <input asp-for="Pagamento.NumeroCartao" type="text" class="form-control" placeholder="" required="">
+                                <input asp-for="Pagamento.Numero" type="text" class="form-control" placeholder="" required="">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3 mb-3">
                                 <label>Data Expiração</label>
-                                <input asp-for="Pagamento.ExpiracaoCartao" type="text" class="form-control" placeholder="" required="">
+                                <input asp-for="Pagamento.Vencimento" type="text" class="form-control" placeholder="" required="">
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label>CVV</label>
-                                <input asp-for="Pagamento.CvvCartao" type="text" class="form-control" placeholder="" required="">
+                                <input asp-for="Pagamento.Cvv" type="text" class="form-control" placeholder="" required="">
                             </div>
                         </div>
                         <hr class="mb-4">
@@ -91,6 +89,5 @@
                 <div><p>Carrinho Vazio</p></div>
             }
         }
-
     </div>
 </div>

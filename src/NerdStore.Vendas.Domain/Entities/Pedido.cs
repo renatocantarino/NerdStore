@@ -1,4 +1,5 @@
-﻿using NerdStore.SharedKernel.DomainObjects;
+﻿using FluentValidation.Results;
+using NerdStore.SharedKernel.DomainObjects;
 using NerdStore.SharedKernel.Exceptions;
 using NerdStore.Vendas.Domain.ValueObjects;
 using System;
@@ -34,6 +35,18 @@ namespace NerdStore.Vendas.Domain.Entities
         protected Pedido() => this._pedidoItems = new List<PedidoItem>();
 
         public bool ItemJaExistente(PedidoItem item) => _pedidoItems.Any(pi => pi.ProdutoId == item.ProdutoId);
+
+        public ValidationResult AplicarVoucher(Voucher voucher)
+        {
+            var voucherResult = voucher.ehAplicavel();
+            if (!voucherResult.IsValid) return voucherResult;
+
+            Voucher = voucher;
+            VoucherAplicado = true;
+            Total();
+
+            return voucherResult;
+        }
 
         public void Total()
         {
