@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Messages\Commom\IntegrationEvents\" />
     <Folder Include="Queries\" />
     <Folder Include="Repositories\" />
   </ItemGroup>

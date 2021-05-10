@@ -6,6 +6,7 @@ using NerdStore.SharedKernel.EventHandlers;
 using NerdStore.SharedKernel.Messages.Commom.Notification;
 using NerdStore.Vendas.Application.Commands;
 using NerdStore.Vendas.Application.Queries;
+using NerdStore.Vendas.Application.Queries.ViewModels;
 using System;
 using System.Threading.Tasks;
 
@@ -96,6 +97,30 @@ namespace NerdStore.WebApp.MVC.Controllers
 
             return View("Index", await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId));
         }
+
+        [HttpPost]
+        [Route("iniciar-pedido")]
+        public async Task<IActionResult> IniciarPedido(CarrinhoViewModel carrinhoViewModel)
+        {
+            var carrinho = await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId);
+
+            if (carrinho == null) return BadRequest();
+
+            var command = new IniciarPedidoCommand(carrinho.PedidoId, ClienteId,
+                carrinho.ValorTotal, carrinhoViewModel.Pagamento.Nome, carrinhoViewModel.Pagamento.Numero,
+                carrinhoViewModel.Pagamento.Vencimento, carrinhoViewModel.Pagamento.Cvv);
+
+            await _mediatorHandler.Comando(command);
+
+            if (OperacaoValida())
+                return RedirectToAction("Index", "Pedido");
+
+            return View("ResumoDaCompra", await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId));
+        }
+
+        [Route("resumo-da-compra")]
+        public async Task<IActionResult> ResumoDaCompra()
+                                => View("ResumoDaCompra", await _pedidoQueries.ObterCarrinhoDoCliente(ClienteId));
 
         private AdicionarItemPedidoCommand GetCommand(ProdutoViewModel produto, int quantidade)
                => new(ClienteId, produto.Id, produto.Nome, quantidade, produto.Valor);

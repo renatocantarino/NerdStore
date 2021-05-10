@@ -1,12 +1,16 @@
 ﻿using MediatR;
 using NerdStore.SharedKernel.Commands;
+using NerdStore.SharedKernel.DomainObjects.Dto;
 using NerdStore.SharedKernel.EventHandlers;
+using NerdStore.SharedKernel.Extensions;
 using NerdStore.SharedKernel.Messages;
+using NerdStore.SharedKernel.Messages.Commom.IntegrationEvents;
 using NerdStore.SharedKernel.Messages.Commom.Notification;
 using NerdStore.Vendas.Application.Commands;
 using NerdStore.Vendas.Application.Events;
 using NerdStore.Vendas.Domain.Entities;
 using NerdStore.Vendas.Domain.Repositories;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +20,8 @@ namespace NerdStore.Vendas.Application.Handlers
     public class PedidoCommandHandler : IRequestHandler<AdicionarItemPedidoCommand, ResponseBase>,
                                         IRequestHandler<AtualizarItemPedidoCommand, ResponseBase>,
                                         IRequestHandler<RemoverItemPedidoCommand, ResponseBase>,
-                                        IRequestHandler<AplicarVoucherPedidoCommand, ResponseBase>
+                                        IRequestHandler<AplicarVoucherPedidoCommand, ResponseBase>,
+                                        IRequestHandler<IniciarPedidoCommand, ResponseBase>
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IMediatorHandler _mediatorHandler;
@@ -161,6 +166,27 @@ namespace NerdStore.Vendas.Application.Handlers
             await _pedidoRepository.UnitOfWork.Commit();
 
             return new ResponseBase(pedido);
+        }
+
+        public async Task<ResponseBase> Handle(IniciarPedidoCommand request, CancellationToken cancellationToken)
+        {
+            if (!ValidateBuilder(request)) return new ResponseBase("Erro ao processar comando");
+
+            var pedido = await _pedidoRepository.ObterPedidoRascunhoPorCliente(request.ClienteId);
+            pedido.Iniciar();
+
+            var itens = new List<Item>();
+
+            pedido.PedidoItems.ForEach(i => itens.Add(new Item { Id = i.ProdutoId, Quantidade = i.Quantidade }));
+            var listaProdutoPedido = new ListaProdutoPedido { Itens = itens, Id = pedido.Id };
+
+            pedido.AdicionarEvento(new PedidoIniciadoEvent(pedido.ClienteId, pedido.Id, request.Total, request.NomeCartao,
+                                        request.NumeroCartao, request.ExpiracaoCartao, request.CvvCartao, listaProdutoPedido));
+
+            _pedidoRepository.Atualizar(pedido);
+            await _pedidoRepository.UnitOfWork.Commit();
+
+            return new ResponseBase(request);
         }
 
         private bool ValidateBuilder(Command msg)
