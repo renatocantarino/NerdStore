@@ -8,17 +8,6 @@ using System.Threading.Tasks;
 
 namespace NerdStore.Catalogo.Domain.Services
 {
-    public interface IEstoqueService : IDisposable
-    {
-        Task<bool> Repor(Guid idProduto, int quantidade);
-
-        Task<bool> Debitar(Guid idProduto, int quantidade);
-
-        Task<bool> DebitarListaProdutosPedido(ListaProdutoPedido lista);
-
-        Task<bool> ReporListaProdutosPedido(ListaProdutoPedido lista);
-    }
-
     public class EstoqueService : IEstoqueService
     {
         private const int ITEM_ESTOQUE_BAIXO_QUANTIDADE = 5;
@@ -53,8 +42,6 @@ namespace NerdStore.Catalogo.Domain.Services
 
             return await _produtoRepository.UnitOfWork.Commit();
         }
-
-        public void Dispose() => _produtoRepository.Dispose();
 
         public async Task<bool> DebitarListaProdutosPedido(ListaProdutoPedido lista)
         {
@@ -112,5 +99,7 @@ namespace NerdStore.Catalogo.Domain.Services
             if (produto.QuantidadeEstoque < ITEM_ESTOQUE_BAIXO_QUANTIDADE)
                 await _mediatorHandler.Publicar(new ProdutoAbaixoEstoqueEvent(produto.Id, produto.QuantidadeEstoque));
         }
+
+        public void Dispose() => _produtoRepository.Dispose();
     }
 }

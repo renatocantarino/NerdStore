@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using NerdStore.Catalogo.Domain.Repositories;
+using NerdStore.Catalogo.Domain.Services;
+using NerdStore.SharedKernel.EventHandlers;
 using NerdStore.SharedKernel.Messages.Commom.IntegrationEvents;
+using NerdStore.SharedKernel.Messages.Commom.IntegrationEvents.Pedido;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,10 +13,15 @@ namespace NerdStore.Catalogo.Domain.Events
                                        INotificationHandler<PedidoIniciadoEvent>
     {
         private readonly IProdutoRepository _produtoRepository;
+        private readonly IEstoqueService _estoqueService;
+        private readonly IMediatorHandler _mediatorHandler;
 
-        public ProdutoEventHandler(IProdutoRepository produtoRepository)
+        public ProdutoEventHandler(IProdutoRepository produtoRepository, IEstoqueService estoqueService,
+            IMediatorHandler mediatorHandler)
         {
-            _produtoRepository = produtoRepository;
+            this._produtoRepository = produtoRepository;
+            this._estoqueService = estoqueService;
+            this._mediatorHandler = mediatorHandler;
         }
 
         public async Task Handle(ProdutoAbaixoEstoqueEvent notification, CancellationToken cancellationToken)
@@ -25,7 +33,15 @@ namespace NerdStore.Catalogo.Domain.Events
 
         public async Task Handle(PedidoIniciadoEvent notification, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var debitarEstoque = await _estoqueService.DebitarListaProdutosPedido(notification.ListaProdutoPedido);
+
+            if (debitarEstoque)
+                await _mediatorHandler.Publicar(new PedidoEstoqueConfirmadoEvent(notification.ClienteId, notification.PedidoId,
+                                                                                notification.Total, notification.TitularCartao,
+                                                                                notification.NumeroCartao, notification.ExpiracaoCartao,
+                                                                                notification.CvvCartao, notification.ListaProdutoPedido));
+            else
+                await _mediatorHandler.Publicar(new PedidoEstoqueRejeitadoEvent(notification.PedidoId, notification.ClienteId));
         }
     }
 }

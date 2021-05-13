@@ -1,5 +1,4 @@
-﻿using NerdStore.SharedKernel.DomainObjects.Dto;
-using NerdStore.SharedKernel.Messages;
+﻿using NerdStore.SharedKernel.Messages;
 using System;
 
 namespace NerdStore.Vendas.Application.Events
