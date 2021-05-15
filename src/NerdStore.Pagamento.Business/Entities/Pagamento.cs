@@ -10,7 +10,7 @@ namespace NerdStore.Pagamento.Business.Entities
         public decimal Valor { get; set; }
         public string NomeCartao { get; set; }
         public string NumeroCartao { get; set; }
-        public string ExpericaoCartao { get; set; }
+        public string ExpiracaoCartao { get; set; }
         public string CvvCartao { get; set; }
 
         //ef relacionamento

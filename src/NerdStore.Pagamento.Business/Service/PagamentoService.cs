@@ -37,7 +37,7 @@ namespace NerdStore.Pagamento.Business.Service
                 Valor = pagamentoPedido.Total,
                 NomeCartao = pagamentoPedido.TitularCartao,
                 NumeroCartao = pagamentoPedido.NumeroCartao,
-                ExpericaoCartao = pagamentoPedido.ExpiracaoCartao,
+                ExpiracaoCartao = pagamentoPedido.ExpiracaoCartao,
                 CvvCartao = pagamentoPedido.CvvCartao,
                 PedidoId = pagamentoPedido.PedidoId
             };
