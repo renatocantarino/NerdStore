@@ -23,10 +23,6 @@ namespace NerdStore.Pagamento.Business.Service
             _pagamentoRepository = pagamentoRepository;
         }
 
-        public PagamentoService()
-        {
-        }
-
         public async Task<Transacao> RealizarPagamentoPedido(PagamentoPedido pagamentoPedido)
         {
             var pedido = new Pedido
@@ -62,9 +58,9 @@ namespace NerdStore.Pagamento.Business.Service
 
             await _mediatorHandler.Notificar(new DomainNotification("pagamento", "operadora recusou o pagamento"));
             await _mediatorHandler.Publicar(new PagamentoRecusadoEvent(dadosOperacao.Pedido.Id,
-                                                                                dadosOperacao.Pedido.ClienteId,
-                                                                                 dadosOperacao.Pagamento.Id,
-                                                                               dadosOperacao.Transacao.Id, dadosOperacao.Pedido.Valor));
+                                                                              dadosOperacao.Pedido.ClienteId,
+                                                                              dadosOperacao.Pagamento.Id,
+                                                                              dadosOperacao.Transacao.Id, dadosOperacao.Pedido.Valor));
         }
 
         private async Task<bool> TransacaoComSucesso(DadosOperacao dadosOperacao)
