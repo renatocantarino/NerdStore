@@ -12,7 +12,7 @@ namespace NerdStore.SharedKernel.Messages.Commom.IntegrationEvents.Pagamento
 
         public PagamentoRealizadoEvent(Guid pedidoId, Guid clienteId, Guid pagamentoId, Guid transacaoId, decimal total)
         {
-            AggregateId = pedidoId;
+            AggregateId = PagamentoId;
             PedidoId = pedidoId;
             ClienteId = clienteId;
             PagamentoId = pagamentoId;

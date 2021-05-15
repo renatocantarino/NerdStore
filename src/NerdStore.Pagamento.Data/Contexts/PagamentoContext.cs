@@ -3,9 +3,7 @@ using NerdStore.Pagamento.Business.Entities;
 using NerdStore.SharedKernel.Data.Repository;
 using NerdStore.SharedKernel.EventHandlers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NerdStore.SharedKernel.Messages;
 using System.Threading.Tasks;
 using NerdStore.Pagamento.Data.Extensions;
@@ -37,7 +35,8 @@ namespace NerdStore.Pagamento.Data.Contexts
             }
 
             var sucesso = await base.SaveChangesAsync() > 0;
-            if (sucesso) await _mediatorHandler.PublicarEventos(this);
+            if (sucesso)
+                await _mediatorHandler.PublicarEventos(this);
 
             return sucesso;
         }

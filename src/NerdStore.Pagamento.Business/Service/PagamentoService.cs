@@ -35,7 +35,7 @@ namespace NerdStore.Pagamento.Business.Service
             var pagamento = new Payment
             {
                 Valor = pagamentoPedido.Total,
-                NomeCartao = pagamentoPedido.TitularCartao,
+                NomeCartao = pagamentoPedido.NomeCartao,
                 NumeroCartao = pagamentoPedido.NumeroCartao,
                 ExpiracaoCartao = pagamentoPedido.ExpiracaoCartao,
                 CvvCartao = pagamentoPedido.CvvCartao,
@@ -69,7 +69,7 @@ namespace NerdStore.Pagamento.Business.Service
 
             dadosOperacao.Pagamento.AdicionarEvento(new PagamentoRealizadoEvent(dadosOperacao.Pedido.Id, dadosOperacao.Pedido.ClienteId,
                                                                                     dadosOperacao.Pagamento.Id, dadosOperacao.Transacao.Id,
-                                                                                    dadosOperacao.Pedido.Valor));
+                                                                                        dadosOperacao.Pedido.Valor));
 
             _pagamentoRepository.Adicionar(dadosOperacao.Pagamento);
             _pagamentoRepository.AdicionarTransacao(dadosOperacao.Transacao);
