@@ -12,9 +12,9 @@ namespace NerdStore.Pagamento.Business.Service
 {
     public class PagamentoService : IPagamentoService
     {
-        private IMediatorHandler _mediatorHandler;
-        private IPagamentoCartaoDeCreditoFacade _pagamentoFacade;
-        private IPagamentoRepository _pagamentoRepository;
+        private readonly IMediatorHandler _mediatorHandler;
+        private readonly IPagamentoCartaoDeCreditoFacade _pagamentoFacade;
+        private readonly IPagamentoRepository _pagamentoRepository;
 
         public PagamentoService(IMediatorHandler mediatorHandler, IPagamentoCartaoDeCreditoFacade pagamentoFacade, IPagamentoRepository pagamentoRepository)
         {
@@ -68,8 +68,8 @@ namespace NerdStore.Pagamento.Business.Service
             if (dadosOperacao.Transacao.StatusTransacao != StatusTransacao.Pago) return false;
 
             dadosOperacao.Pagamento.AdicionarEvento(new PagamentoRealizadoEvent(dadosOperacao.Pedido.Id, dadosOperacao.Pedido.ClienteId,
-                                                                                    dadosOperacao.Pagamento.Id, dadosOperacao.Transacao.Id,
-                                                                                        dadosOperacao.Pedido.Valor));
+                                                                                      dadosOperacao.Pagamento.Id, dadosOperacao.Transacao.Id,
+                                                                                      dadosOperacao.Pedido.Valor));
 
             _pagamentoRepository.Adicionar(dadosOperacao.Pagamento);
             _pagamentoRepository.AdicionarTransacao(dadosOperacao.Transacao);

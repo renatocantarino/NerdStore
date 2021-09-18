@@ -2,10 +2,6 @@
 using NerdStore.Pagamento.Business.Service;
 using NerdStore.SharedKernel.DomainObjects.Dto;
 using NerdStore.SharedKernel.Messages.Commom.IntegrationEvents.Pedido;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

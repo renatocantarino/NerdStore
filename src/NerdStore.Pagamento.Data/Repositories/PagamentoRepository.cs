@@ -2,7 +2,6 @@
 using NerdStore.Pagamento.Business.Repository;
 using NerdStore.Pagamento.Data.Contexts;
 using NerdStore.SharedKernel.Data.Repository;
-using System;
 
 namespace NerdStore.Pagamento.Data.Repositories
 {
